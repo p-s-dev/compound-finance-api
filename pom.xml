@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.psdev</groupId>
-    <artifactId>compound.finance</artifactId>
+    <groupId>com.psdev.compoundfinance</groupId>
+    <artifactId>compound-finance-api</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1</version>
-    <name>liquidator</name>
+    <name>compound-finance-api</name>
     <url>https://github.com/p-s-dev/compound.liquidator.git</url>
 
     <dependencies>
