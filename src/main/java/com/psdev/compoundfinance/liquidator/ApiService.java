@@ -3,7 +3,9 @@ package com.psdev.compoundfinance.liquidator;
 import com.google.common.collect.Lists;
 import com.psdev.compoundfinance.liquidator.data.EthValue;
 import com.psdev.compoundfinance.liquidator.data.GetAccountValueRequest;
+import com.psdev.compoundfinance.liquidator.data.GetAccountValueResponse;
 import com.psdev.compoundfinance.liquidator.data.GetAccountValuesRequest;
+import com.psdev.compoundfinance.liquidator.data.GetAccountValuesResponse;
 import com.psdev.compoundfinance.liquidator.interceptor.ApiKeyHeaderRequestInterceptor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,17 +28,17 @@ public class ApiService extends AbstractService{
     }
 
 
-    public String getTopAccountValuesString() {
+    public GetAccountValuesResponse getTopAccountValuesString() {
         return rateLimitedRestTemplate.getForObject(BASE_URL + API_GROUP_RISK + RISK_API_TOP_ACCOUNT_VALUES,
-                String.class);
+                GetAccountValuesResponse.class);
     }
 
-    public String getAccountValues() {
-        return getAccountValuesString(null, null, null, null);
+    public GetAccountValuesResponse getAccountValues() {
+        return getAccountValues(null, null, null, null);
     }
 
-    public String getAccountValuesString(Integer pageSize, Integer pageNumber,
-                                     EthValue minBorrowValue, EthValue maxCollateralValue) {
+    public GetAccountValuesResponse getAccountValues(Integer pageSize, Integer pageNumber,
+                                                     EthValue minBorrowValue, EthValue maxCollateralValue) {
 
         GetAccountValuesRequest req = new GetAccountValuesRequest();
         req.setPage_number(validatePageNumber(pageNumber));
@@ -44,23 +46,44 @@ public class ApiService extends AbstractService{
         req.setMin_borrow_value_in_eth(validateMinBorrowValue(minBorrowValue));
         req.setMax_collateral_ratio(validateMaxCollateralValue(maxCollateralValue));
 
-        ResponseEntity<String> response = rateLimitedRestTemplate
+        return rateLimitedRestTemplate
                 .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUES,
-                        HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), String.class);
-        return response.getBody().toString();
-
+                        HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), GetAccountValuesResponse.class).getBody();
 
     }
 
-    public String getAccountValue(String accountAddress) {
-
+    public GetAccountValueResponse getAccountValue(String accountAddress) {
         validateAddress(accountAddress);
 
-        ResponseEntity<String> response = rateLimitedRestTemplate
+        return rateLimitedRestTemplate
                 .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUE,
                         HttpMethod.POST, new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()),
-                        String.class);
-        return response.getBody().toString();
+                        GetAccountValueResponse.class).getBody();
+    }
+
+
+    @Deprecated
+    public String getAccountValuesString(Integer pageSize, Integer pageNumber,
+                                         EthValue minBorrowValue, EthValue maxCollateralValue) {
+
+        GetAccountValuesRequest req = new GetAccountValuesRequest();
+        req.setPage_number(validatePageNumber(pageNumber));
+        req.setPage_size(validatePageSize(pageSize));
+        req.setMin_borrow_value_in_eth(validateMinBorrowValue(minBorrowValue));
+        req.setMax_collateral_ratio(validateMaxCollateralValue(maxCollateralValue));
+
+        return rateLimitedRestTemplate
+                .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUES,
+                        HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), String.class).getBody();
+
+    }
+
+    @Deprecated
+    public String getAccountValueString(String accountAddress) {
+        validateAddress(accountAddress);
+        return rateLimitedRestTemplate.exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUE, HttpMethod.POST,
+                        new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()), String.class)
+                .getBody();
 
     }
 
