@@ -7,12 +7,15 @@ import com.psdev.compoundfinance.liquidator.data.GetAccountValueResponse;
 import com.psdev.compoundfinance.liquidator.data.GetAccountValuesRequest;
 import com.psdev.compoundfinance.liquidator.data.GetAccountValuesResponse;
 import com.psdev.compoundfinance.liquidator.interceptor.ApiKeyHeaderRequestInterceptor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 public class ApiService extends AbstractService{
@@ -38,7 +41,7 @@ public class ApiService extends AbstractService{
     }
 
     public GetAccountValuesResponse getAccountValues(Integer pageSize, Integer pageNumber,
-                                                     EthValue minBorrowValue, EthValue maxCollateralValue) {
+                                                     BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
 
         GetAccountValuesRequest req = new GetAccountValuesRequest();
         req.setPage_number(validatePageNumber(pageNumber));
@@ -64,7 +67,7 @@ public class ApiService extends AbstractService{
 
     @Deprecated
     public String getAccountValuesString(Integer pageSize, Integer pageNumber,
-                                         EthValue minBorrowValue, EthValue maxCollateralValue) {
+                                         BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
 
         GetAccountValuesRequest req = new GetAccountValuesRequest();
         req.setPage_number(validatePageNumber(pageNumber));
@@ -86,6 +89,12 @@ public class ApiService extends AbstractService{
                 .getBody();
 
     }
+
+    @ConfigurationProperties(prefix = "compound.read.rest.connection")
+    public HttpComponentsClientHttpRequestFactory publicReadHttpRequestFactory() {
+        return new HttpComponentsClientHttpRequestFactory();
+    }
+
 
 
 }

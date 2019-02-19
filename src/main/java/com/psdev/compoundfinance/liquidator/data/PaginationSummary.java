@@ -1,8 +1,10 @@
 package com.psdev.compoundfinance.liquidator.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.ToString;
 
+@Getter
 @ToString(callSuper=true, includeFieldNames=true)
 public class PaginationSummary {
 //     *     "pagination_summary": {

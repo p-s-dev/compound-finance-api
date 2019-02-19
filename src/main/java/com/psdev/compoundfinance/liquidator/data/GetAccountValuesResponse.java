@@ -1,10 +1,12 @@
 package com.psdev.compoundfinance.liquidator.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 
+@Getter
 @ToString(callSuper=true, includeFieldNames=true)
 public class GetAccountValuesResponse {
 

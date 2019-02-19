@@ -35,20 +35,20 @@ abstract class AbstractService {
     public static final BigDecimal DEFAULT_MIN_BORROW = BigDecimal.ZERO;
     public static final BigDecimal DEFAULT_MAX_COLLAT = BigDecimal.valueOf(2);
 
-    protected EthValue validateMaxCollateralValue(EthValue maxCollateralValue) {
+    protected EthValue validateMaxCollateralValue(BigDecimal maxCollateralValue) {
         if (maxCollateralValue == null) {
             return new EthValue(DEFAULT_MAX_COLLAT);
         } else {
-            return maxCollateralValue;
+            return new EthValue(maxCollateralValue);
         }
 
     }
 
-    protected EthValue validateMinBorrowValue(EthValue minBorrowValue) {
+    protected EthValue validateMinBorrowValue(BigDecimal minBorrowValue) {
         if (minBorrowValue == null) {
             return new EthValue(DEFAULT_MIN_BORROW);
         } else {
-            return minBorrowValue;
+            return new EthValue(minBorrowValue);
         }
     }
 
@@ -95,11 +95,6 @@ abstract class AbstractService {
 
     public static boolean isValidAddress(byte[] addr) {
         return addr != null && addr.length == 20;
-    }
-
-    @ConfigurationProperties(prefix = "compound.read.rest.connection")
-    public HttpComponentsClientHttpRequestFactory publicReadHttpRequestFactory() {
-        return new HttpComponentsClientHttpRequestFactory();
     }
 
 }
