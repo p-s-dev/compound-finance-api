@@ -20,7 +20,8 @@ abstract class AbstractService {
 
     public static final String HEADER_KEY = "compound-api-key";
 
-    public static final String BASE_URL = "https://api.compound.finance/api/";
+    public static final String BASE_URL_PREFIX = "https://";
+    public static final String BASE_URL_SUFFIX = "/api/";
     public static final String API_GROUP_RISK = "risk/v1/";
     public static final String API_GROUP_MARKET_HISTORY = "market_history/v1/";
 

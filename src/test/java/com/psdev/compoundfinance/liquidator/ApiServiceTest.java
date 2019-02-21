@@ -15,7 +15,8 @@ public class ApiServiceTest {
     String ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
     private static final String TEST_KEY = "";
 
-    ApiService api = new ApiService(ApiCredentials.of(TEST_KEY));
+    ApiService stageApi = new ApiService(ApiCredentials.of(TEST_KEY), "api.stage.compound.finance");
+    ApiService api = new ApiService(ApiCredentials.of(TEST_KEY), "api.compound.finance");
 
     @Test
     public void testAll() {

@@ -20,7 +20,32 @@ import java.util.Collections;
 
 public class ApiService extends AbstractService{
 
-    public ApiService(ApiCredentials credentials) {
+    private String TOP_ACCOUNT_VALUES_URL;
+    private String GET_ACCOUNT_VALUES_URL;
+    private String GET_ACCOUNT_VALUE_URL;
+
+    public ApiService(ApiCredentials credentials, String hostname) {
+
+        TOP_ACCOUNT_VALUES_URL =
+                BASE_URL_PREFIX +
+                hostname +
+                BASE_URL_SUFFIX +
+                API_GROUP_RISK +
+                RISK_API_TOP_ACCOUNT_VALUES;
+
+        GET_ACCOUNT_VALUES_URL =
+                BASE_URL_PREFIX +
+                        hostname +
+                        BASE_URL_SUFFIX +
+                        API_GROUP_RISK +
+                        RISK_API_ACCOUNT_VALUES;
+
+        GET_ACCOUNT_VALUE_URL =
+                BASE_URL_PREFIX +
+                        hostname +
+                        BASE_URL_SUFFIX +
+                        API_GROUP_RISK +
+                        RISK_API_ACCOUNT_VALUE;
 
         rateLimitedRestTemplate = new RestTemplate(publicReadHttpRequestFactory());
         rateLimitedRestTemplate.setInterceptors(Collections.singletonList(
@@ -32,62 +57,26 @@ public class ApiService extends AbstractService{
 
 
     public GetAccountValuesResponse getTopAccountValuesString() {
-        return rateLimitedRestTemplate.getForObject(BASE_URL + API_GROUP_RISK + RISK_API_TOP_ACCOUNT_VALUES,
-                GetAccountValuesResponse.class);
+        return rateLimitedRestTemplate.getForObject(TOP_ACCOUNT_VALUES_URL, GetAccountValuesResponse.class);
     }
 
     public GetAccountValuesResponse getAccountValues() {
         return getAccountValues(null, null, null, null);
     }
-
     public GetAccountValuesResponse getAccountValues(Integer pageSize, Integer pageNumber,
                                                      BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
-
-        GetAccountValuesRequest req = new GetAccountValuesRequest();
-        req.setPage_number(validatePageNumber(pageNumber));
-        req.setPage_size(validatePageSize(pageSize));
-        req.setMin_borrow_value_in_eth(validateMinBorrowValue(minBorrowValue));
-        req.setMax_collateral_ratio(validateMaxCollateralValue(maxCollateralValue));
-
-        return rateLimitedRestTemplate
-                .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUES,
-                        HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), GetAccountValuesResponse.class).getBody();
-
+        GetAccountValuesRequest req =
+                getGetAccountValuesRequest(pageSize, pageNumber, minBorrowValue, maxCollateralValue);
+        return rateLimitedRestTemplate.exchange(GET_ACCOUNT_VALUES_URL,
+                HttpMethod.POST, new HttpEntity(req, new HttpHeaders()),
+                GetAccountValuesResponse.class).getBody();
     }
 
     public GetAccountValueResponse getAccountValue(String accountAddress) {
         validateAddress(accountAddress);
-
-        return rateLimitedRestTemplate
-                .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUE,
-                        HttpMethod.POST, new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()),
-                        GetAccountValueResponse.class).getBody();
-    }
-
-
-    @Deprecated
-    public String getAccountValuesString(Integer pageSize, Integer pageNumber,
-                                         BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
-
-        GetAccountValuesRequest req = new GetAccountValuesRequest();
-        req.setPage_number(validatePageNumber(pageNumber));
-        req.setPage_size(validatePageSize(pageSize));
-        req.setMin_borrow_value_in_eth(validateMinBorrowValue(minBorrowValue));
-        req.setMax_collateral_ratio(validateMaxCollateralValue(maxCollateralValue));
-
-        return rateLimitedRestTemplate
-                .exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUES,
-                        HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), String.class).getBody();
-
-    }
-
-    @Deprecated
-    public String getAccountValueString(String accountAddress) {
-        validateAddress(accountAddress);
-        return rateLimitedRestTemplate.exchange(BASE_URL + API_GROUP_RISK + RISK_API_ACCOUNT_VALUE, HttpMethod.POST,
-                        new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()), String.class)
-                .getBody();
-
+        return rateLimitedRestTemplate.exchange(GET_ACCOUNT_VALUE_URL,
+                HttpMethod.POST, new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()),
+                GetAccountValueResponse.class).getBody();
     }
 
     @ConfigurationProperties(prefix = "compound.read.rest.connection")
@@ -95,6 +84,33 @@ public class ApiService extends AbstractService{
         return new HttpComponentsClientHttpRequestFactory();
     }
 
+    private GetAccountValuesRequest getGetAccountValuesRequest(Integer pageSize, Integer pageNumber, BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
+        GetAccountValuesRequest req = new GetAccountValuesRequest();
+        req.setPage_number(validatePageNumber(pageNumber));
+        req.setPage_size(validatePageSize(pageSize));
+        req.setMin_borrow_value_in_eth(validateMinBorrowValue(minBorrowValue));
+        req.setMax_collateral_ratio(validateMaxCollateralValue(maxCollateralValue));
+        return req;
+    }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Deprecated
+    public String getAccountValuesString(Integer pageSize, Integer pageNumber,
+                                         BigDecimal minBorrowValue, BigDecimal maxCollateralValue) {
+        GetAccountValuesRequest req =
+                getGetAccountValuesRequest(pageSize, pageNumber, minBorrowValue, maxCollateralValue);
+        return rateLimitedRestTemplate.exchange(GET_ACCOUNT_VALUES_URL,
+                HttpMethod.POST, new HttpEntity(req, new HttpHeaders()), String.class).getBody();
+    }
+
+    @Deprecated
+    public String getAccountValueString(String accountAddress) {
+        validateAddress(accountAddress);
+        return rateLimitedRestTemplate.exchange(GET_ACCOUNT_VALUE_URL,
+                HttpMethod.POST, new HttpEntity(new GetAccountValueRequest(accountAddress), new HttpHeaders()),
+                String.class).getBody();
+    }
 
 }
