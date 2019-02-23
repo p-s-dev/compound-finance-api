@@ -2,7 +2,7 @@
 
 https://compound.finance/developers#compound-api
 
-##functions
+## functions
  - get_top_account_values
  - get_account_values
  - get_account_value
