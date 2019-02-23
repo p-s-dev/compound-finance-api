@@ -1,17 +1,15 @@
-package com.psdev.compoundfinance.liquidator;
+package com.psdev.compoundfinance.api;
 
 import com.google.common.collect.Lists;
-import com.psdev.compoundfinance.liquidator.data.EthValue;
-import com.psdev.compoundfinance.liquidator.data.GetAccountValueRequest;
-import com.psdev.compoundfinance.liquidator.data.GetAccountValueResponse;
-import com.psdev.compoundfinance.liquidator.data.GetAccountValuesRequest;
-import com.psdev.compoundfinance.liquidator.data.GetAccountValuesResponse;
-import com.psdev.compoundfinance.liquidator.interceptor.ApiKeyHeaderRequestInterceptor;
+import com.psdev.compoundfinance.api.data.GetAccountValueRequest;
+import com.psdev.compoundfinance.api.data.GetAccountValueResponse;
+import com.psdev.compoundfinance.api.data.GetAccountValuesRequest;
+import com.psdev.compoundfinance.api.data.GetAccountValuesResponse;
+import com.psdev.compoundfinance.api.interceptor.ApiKeyHeaderRequestInterceptor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 

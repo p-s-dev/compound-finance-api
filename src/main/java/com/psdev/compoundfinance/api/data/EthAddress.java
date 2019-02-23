@@ -1,4 +1,4 @@
-package com.psdev.compoundfinance.liquidator.data;
+package com.psdev.compoundfinance.api.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

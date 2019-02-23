@@ -1,10 +1,9 @@
-package com.psdev.compoundfinance.liquidator;
+package com.psdev.compoundfinance.api;
 
-import com.psdev.compoundfinance.liquidator.data.GetAccountValueResponse;
-import com.psdev.compoundfinance.liquidator.data.GetAccountValuesResponse;
+import com.psdev.compoundfinance.api.data.GetAccountValueResponse;
+import com.psdev.compoundfinance.api.data.GetAccountValuesResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 

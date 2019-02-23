@@ -1,11 +1,9 @@
-package com.psdev.compoundfinance.liquidator;
+package com.psdev.compoundfinance.api;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.RateLimiter;
-import com.psdev.compoundfinance.liquidator.data.EthValue;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import com.psdev.compoundfinance.api.data.EthValue;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 

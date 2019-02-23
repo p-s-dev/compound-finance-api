@@ -1,8 +1,8 @@
-package com.psdev.compoundfinance.liquidator.interceptor;
+package com.psdev.compoundfinance.api.interceptor;
 
 import com.google.common.util.concurrent.RateLimiter;
-import com.psdev.compoundfinance.liquidator.ApiCredentials;
-import com.psdev.compoundfinance.liquidator.ApiService;
+import com.psdev.compoundfinance.api.ApiCredentials;
+import com.psdev.compoundfinance.api.ApiService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;

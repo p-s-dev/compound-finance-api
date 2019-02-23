@@ -1,4 +1,4 @@
-package com.psdev.compoundfinance.liquidator.data;
+package com.psdev.compoundfinance.api.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
